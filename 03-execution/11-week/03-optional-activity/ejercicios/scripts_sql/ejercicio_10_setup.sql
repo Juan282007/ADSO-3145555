@@ -60,8 +60,8 @@ CREATE OR REPLACE PROCEDURE sp_register_person_document(
     p_person_id          uuid,
     p_document_type_id   uuid,
     p_document_number    varchar,
-    p_issue_date         date,
-    p_expiration_date    date,
+    p_issued_on          date,        -- CORRECCIÓN: nombre alineado con columna real del esquema
+    p_expires_on         date,        -- CORRECCIÓN: nombre alineado con columna real del esquema
     p_issuing_country_id uuid
 )
 LANGUAGE plpgsql
@@ -82,16 +82,16 @@ BEGIN
         person_id,
         document_type_id,
         document_number,
-        issue_date,
-        expiration_date,
+        issued_on,           -- CORRECCIÓN: nombre real de columna (antes issue_date)
+        expires_on,          -- CORRECCIÓN: nombre real de columna (antes expiration_date)
         issuing_country_id
     )
     VALUES (
         p_person_id,
         p_document_type_id,
         p_document_number,
-        p_issue_date,
-        p_expiration_date,
+        p_issued_on,
+        p_expires_on,
         p_issuing_country_id
     );
 END;
@@ -100,14 +100,14 @@ $$;
 SELECT
     p.first_name                        AS nombre,
     p.last_name                         AS apellido,
-    pt.person_type_name                 AS tipo_persona,
-    dt.document_type_name               AS tipo_documento,
+    pt.type_name                        AS tipo_persona,        -- CORRECCIÓN: columna real (antes person_type_name)
+    dt.type_name                        AS tipo_documento,      -- CORRECCIÓN: columna real (antes document_type_name)
     pd.document_number                  AS numero_documento,
-    pd.expiration_date                  AS vencimiento_documento,
-    ct.contact_type_name                AS tipo_contacto,
+    pd.expires_on                       AS vencimiento_documento, -- CORRECCIÓN: columna real (antes expiration_date)
+    ct.type_name                        AS tipo_contacto,       -- CORRECCIÓN: columna real (antes contact_type_name)
     pc.contact_value                    AS valor_contacto,
     r.reservation_code                  AS reserva,
-    rp.sequence_number                  AS secuencia_pasajero
+    rp.passenger_sequence_no            AS secuencia_pasajero   -- CORRECCIÓN: columna real (antes sequence_number)
 FROM person p
 INNER JOIN person_type pt
     ON pt.person_type_id = p.person_type_id

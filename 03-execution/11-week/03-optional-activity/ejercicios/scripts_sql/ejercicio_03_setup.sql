@@ -1,39 +1,48 @@
-DROP TRIGGER IF EXISTS trg_ai_invoice_line_update_invoice_total ON invoice_line;
-DROP FUNCTION IF EXISTS fn_ai_invoice_line_update_invoice_total();
+DROP TRIGGER IF EXISTS trg_ai_invoice_line_log_invoice_update ON invoice_line;
+DROP FUNCTION IF EXISTS fn_ai_invoice_line_log_invoice_update();
 DROP PROCEDURE IF EXISTS sp_register_invoice_line(uuid, uuid, integer, varchar, numeric, numeric);
 
-CREATE OR REPLACE FUNCTION fn_ai_invoice_line_update_invoice_total()
+CREATE OR REPLACE FUNCTION fn_ai_invoice_line_log_invoice_update()
 RETURNS trigger
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    v_total_amount numeric;
+    v_line_total   numeric;
+    v_line_count   integer;
 BEGIN
-    SELECT COALESCE(SUM(il.unit_price * il.quantity), 0)
-    INTO v_total_amount
+    -- Calcular el subtotal de la línea insertada
+    v_line_total := NEW.unit_price * NEW.quantity;
+
+    -- Contar cuántas líneas tiene ahora la factura
+    SELECT COUNT(*)
+    INTO v_line_count
     FROM invoice_line il
     WHERE il.invoice_id = NEW.invoice_id;
 
+    -- Actualizar el campo notes de la factura con un resumen de trazabilidad
     UPDATE invoice
-    SET total_amount = v_total_amount
+    SET notes = 'Última línea agregada: ' || NEW.line_description
+             || ' | Subtotal línea: ' || v_line_total::text
+             || ' | Total líneas: ' || v_line_count::text
+             || ' | Actualizado: ' || now()::text
     WHERE invoice_id = NEW.invoice_id;
 
     RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER trg_ai_invoice_line_update_invoice_total
+CREATE TRIGGER trg_ai_invoice_line_log_invoice_update
 AFTER INSERT ON invoice_line
 FOR EACH ROW
-EXECUTE FUNCTION fn_ai_invoice_line_update_invoice_total();
+EXECUTE FUNCTION fn_ai_invoice_line_log_invoice_update();
 
 CREATE OR REPLACE PROCEDURE sp_register_invoice_line(
-    p_invoice_id     uuid,
-    p_tax_id         uuid,
-    p_line_number    integer,
-    p_description    varchar,
-    p_quantity       numeric,
-    p_unit_price     numeric
+    p_invoice_id       uuid,
+    p_tax_id           uuid,
+    p_line_number      integer,
+    p_line_description varchar,
+    p_quantity         numeric,
+    p_unit_price       numeric
 )
 LANGUAGE plpgsql
 AS $$
@@ -59,7 +68,7 @@ BEGIN
         invoice_id,
         tax_id,
         line_number,
-        description,
+        line_description,
         quantity,
         unit_price
     )
@@ -67,7 +76,7 @@ BEGIN
         p_invoice_id,
         p_tax_id,
         p_line_number,
-        p_description,
+        p_line_description,
         p_quantity,
         p_unit_price
     );
@@ -78,13 +87,13 @@ $$;
 SELECT
     s.sale_code,
     i.invoice_number,
-    ist.status_name       AS estado_factura,
-    il.line_number        AS linea_facturable,
-    il.description        AS descripcion_linea,
+    ist.status_name            AS estado_factura,
+    il.line_number             AS linea_facturable,
+    il.line_description        AS descripcion_linea,
     il.quantity,
-    il.unit_price         AS precio_unitario,
-    t.tax_name            AS impuesto_aplicado,
-    c.currency_code       AS moneda
+    il.unit_price              AS precio_unitario,
+    t.tax_name                 AS impuesto_aplicado,
+    c.iso_currency_code        AS moneda
 FROM sale s
 INNER JOIN invoice i
     ON i.sale_id = s.sale_id

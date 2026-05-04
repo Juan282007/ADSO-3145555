@@ -1,57 +1,60 @@
 DROP TRIGGER IF EXISTS trg_ai_miles_transaction_update_account_tier ON miles_transaction;
-DROP FUNCTION IF EXISTS fn_ai_miles_transaction_update_account_tier();
-DROP PROCEDURE IF EXISTS sp_register_miles_transaction(uuid, varchar, numeric, timestamptz, varchar);
+DROP FUNCTION IF EXISTS fn_ai_miles_transaction_update_account_tier() CASCADE;
+DROP PROCEDURE IF EXISTS sp_register_miles_transaction(uuid, varchar, integer, timestamptz, text);
 
 CREATE OR REPLACE FUNCTION fn_ai_miles_transaction_update_account_tier()
 RETURNS trigger
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    v_total_miles       numeric;
+    v_total_miles       bigint;
     v_new_tier_id       uuid;
     v_current_tier_id   uuid;
 BEGIN
-    -- Calcular el total acumulado de millas de la cuenta
-    SELECT COALESCE(SUM(mt.miles_amount), 0)
+    -- Calcular el total acumulado de miles_delta de la cuenta
+    SELECT COALESCE(SUM(mt.miles_delta), 0)
     INTO v_total_miles
     FROM miles_transaction mt
     WHERE mt.loyalty_account_id = NEW.loyalty_account_id;
 
-    -- Buscar el tier más alto cuyo umbral mínimo no supere el total acumulado
+    -- Buscar el tier cuyo required_miles más alto no supere el total acumulado
     SELECT lt.loyalty_tier_id
     INTO v_new_tier_id
     FROM loyalty_tier lt
-    WHERE lt.min_miles <= v_total_miles
-    ORDER BY lt.min_miles DESC
+    INNER JOIN loyalty_account la
+        ON la.loyalty_program_id = lt.loyalty_program_id
+    WHERE la.loyalty_account_id = NEW.loyalty_account_id
+      AND lt.required_miles <= v_total_miles
+    ORDER BY lt.required_miles DESC
     LIMIT 1;
 
     IF v_new_tier_id IS NULL THEN
         RETURN NEW;
     END IF;
 
-    -- Verificar si ya existe un registro activo en loyalty_account_tier para esa cuenta
+    -- Verificar el tier activo actual (el que no tiene expires_at o el más reciente)
     SELECT lat.loyalty_tier_id
     INTO v_current_tier_id
     FROM loyalty_account_tier lat
     WHERE lat.loyalty_account_id = NEW.loyalty_account_id
-      AND lat.end_date IS NULL
-    ORDER BY lat.start_date DESC
+      AND (lat.expires_at IS NULL OR lat.expires_at > now())
+    ORDER BY lat.assigned_at DESC
     LIMIT 1;
 
     -- Solo actuar si el tier calculado es diferente al actual
     IF v_current_tier_id IS DISTINCT FROM v_new_tier_id THEN
-        -- Cerrar el tier activo anterior si existe
+        -- Cerrar el tier activo anterior
         UPDATE loyalty_account_tier
-        SET end_date = now()
+        SET expires_at = now()
         WHERE loyalty_account_id = NEW.loyalty_account_id
-          AND end_date IS NULL;
+          AND (expires_at IS NULL OR expires_at > now());
 
         -- Insertar el nuevo tier
         INSERT INTO loyalty_account_tier (
             loyalty_account_id,
             loyalty_tier_id,
-            start_date,
-            end_date
+            assigned_at,
+            expires_at
         )
         VALUES (
             NEW.loyalty_account_id,
@@ -73,9 +76,9 @@ EXECUTE FUNCTION fn_ai_miles_transaction_update_account_tier();
 CREATE OR REPLACE PROCEDURE sp_register_miles_transaction(
     p_loyalty_account_id   uuid,
     p_transaction_type     varchar,
-    p_miles_amount         numeric,
-    p_transaction_date     timestamptz,
-    p_notes                varchar
+    p_miles_delta          integer,
+    p_occurred_at          timestamptz,
+    p_notes                text
 )
 LANGUAGE plpgsql
 AS $$
@@ -88,37 +91,41 @@ BEGIN
         RAISE EXCEPTION 'No existe una cuenta de fidelización con loyalty_account_id %', p_loyalty_account_id;
     END IF;
 
-    IF p_miles_amount <= 0 THEN
-        RAISE EXCEPTION 'El monto de millas debe ser mayor a cero. Valor recibido: %', p_miles_amount;
+    IF p_transaction_type NOT IN ('EARN', 'REDEEM', 'ADJUST') THEN
+        RAISE EXCEPTION 'Tipo de transacción inválido: %. Valores permitidos: EARN, REDEEM, ADJUST', p_transaction_type;
+    END IF;
+
+    IF p_miles_delta = 0 THEN
+        RAISE EXCEPTION 'El valor de miles_delta no puede ser cero.';
     END IF;
 
     INSERT INTO miles_transaction (
         loyalty_account_id,
         transaction_type,
-        miles_amount,
-        transaction_date,
+        miles_delta,
+        occurred_at,
         notes
     )
     VALUES (
         p_loyalty_account_id,
         p_transaction_type,
-        p_miles_amount,
-        p_transaction_date,
+        p_miles_delta,
+        p_occurred_at,
         p_notes
     );
 END;
 $$;
 
--- Consulta resuelta: trazabilidad de fidelización cliente-persona-cuenta-programa-nivel-venta
+-- Consulta resuelta: trazabilidad fidelización cliente-persona-cuenta-programa-nivel-venta
 SELECT
-    c.customer_code,
+    c.customer_id,
     p.first_name,
     p.last_name,
-    la.account_number         AS cuenta_fidelizacion,
-    lp.program_name           AS programa,
-    lt.tier_name              AS nivel,
-    lat.start_date            AS fecha_asignacion_nivel,
-    s.sale_code               AS venta_relacionada
+    la.account_number          AS cuenta_fidelizacion,
+    lp.program_name            AS programa,
+    lt.tier_name               AS nivel,
+    lat.assigned_at            AS fecha_asignacion_nivel,
+    s.sale_code                AS venta_relacionada
 FROM customer c
 INNER JOIN person p
     ON p.person_id = c.person_id
@@ -131,7 +138,7 @@ INNER JOIN loyalty_account_tier lat
 INNER JOIN loyalty_tier lt
     ON lt.loyalty_tier_id = lat.loyalty_tier_id
 INNER JOIN reservation r
-    ON r.customer_id = c.customer_id
+    ON r.booked_by_customer_id = c.customer_id
 INNER JOIN sale s
     ON s.reservation_id = r.reservation_id
-ORDER BY lat.start_date DESC, c.customer_code;
+ORDER BY lat.assigned_at DESC, c.customer_id;

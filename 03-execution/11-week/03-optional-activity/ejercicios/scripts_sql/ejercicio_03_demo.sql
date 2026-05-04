@@ -1,11 +1,11 @@
 DO $$
 DECLARE
-    v_invoice_id     uuid;
-    v_tax_id         uuid;
-    v_line_number    integer;
-    v_description    varchar := 'Servicio de transporte aéreo - segmento adicional';
-    v_quantity       numeric := 1;
-    v_unit_price     numeric;
+    v_invoice_id       uuid;
+    v_tax_id           uuid;
+    v_line_number      integer;
+    v_line_description varchar := 'Servicio de transporte aéreo - segmento adicional';
+    v_quantity         numeric := 1;
+    v_unit_price       numeric := 150.00;
 BEGIN
     -- Buscar una factura existente en el sistema
     SELECT i.invoice_id
@@ -27,12 +27,6 @@ BEGIN
     FROM invoice_line il
     WHERE il.invoice_id = v_invoice_id;
 
-    -- Usar el total actual de la factura como referencia de precio unitario
-    SELECT COALESCE(i.total_amount, 100)
-    INTO v_unit_price
-    FROM invoice i
-    WHERE i.invoice_id = v_invoice_id;
-
     IF v_invoice_id IS NULL THEN
         RAISE EXCEPTION 'No existe ninguna factura disponible en el sistema.';
     END IF;
@@ -46,20 +40,20 @@ BEGIN
         v_invoice_id,
         v_tax_id,
         v_line_number,
-        v_description,
+        v_line_description,
         v_quantity,
         v_unit_price
     );
 END;
 $$;
 
--- Validación: verificar la línea registrada y el total actualizado en la factura por el trigger
+-- Validación: verificar la línea registrada y el notes actualizado en la factura por el trigger
 SELECT
     i.invoice_id,
     i.invoice_number,
-    i.total_amount        AS total_actualizado,
+    i.notes                    AS trazabilidad_factura,
     il.line_number,
-    il.description,
+    il.line_description,
     il.quantity,
     il.unit_price,
     t.tax_name

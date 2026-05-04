@@ -44,8 +44,8 @@ BEGIN
         v_person_id,
         v_document_type_id,
         v_document_number,
-        current_date - interval '5 years',
-        current_date + interval '5 years',
+        (current_date - interval '5 years')::date,
+        (current_date + interval '5 years')::date,
         v_issuing_country_id
     );
 END;
@@ -54,10 +54,10 @@ $$;
 SELECT
     p.first_name,
     p.last_name,
-    dt.document_type_name,
+    dt.type_name                AS document_type_name,  -- CORRECCIÓN: columna real (antes document_type_name)
     pd.document_number,
-    pd.issue_date,
-    pd.expiration_date
+    pd.issued_on,               -- CORRECCIÓN: columna real (antes issue_date)
+    pd.expires_on               -- CORRECCIÓN: columna real (antes expiration_date)
 FROM person_document pd
 INNER JOIN person p
     ON p.person_id = pd.person_id
@@ -71,7 +71,7 @@ SELECT
     pc.person_contact_id,
     p.first_name,
     p.last_name,
-    ct.contact_type_name,
+    ct.type_name                AS contact_type_name,   -- CORRECCIÓN: columna real (antes contact_type_name)
     pc.contact_value,
     pc.created_at
 FROM person_contact pc

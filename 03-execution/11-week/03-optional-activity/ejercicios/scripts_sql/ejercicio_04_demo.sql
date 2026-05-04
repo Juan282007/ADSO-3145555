@@ -1,10 +1,10 @@
 DO $$
 DECLARE
     v_loyalty_account_id   uuid;
-    v_transaction_type     varchar := 'accrual';
-    v_miles_amount         numeric := 5000;
-    v_transaction_date     timestamptz := now();
-    v_notes                varchar := 'Acumulación por vuelo operado - registro automático';
+    v_transaction_type     varchar := 'EARN';
+    v_miles_delta          integer := 5000;
+    v_occurred_at          timestamptz := now();
+    v_notes                text := 'Acumulación por vuelo operado - registro automático';
 BEGIN
     -- Buscar una cuenta de fidelización activa disponible
     SELECT la.loyalty_account_id
@@ -21,8 +21,8 @@ BEGIN
     CALL sp_register_miles_transaction(
         v_loyalty_account_id,
         v_transaction_type,
-        v_miles_amount,
-        v_transaction_date,
+        v_miles_delta,
+        v_occurred_at,
         v_notes
     );
 END;
@@ -33,17 +33,17 @@ SELECT
     mt.miles_transaction_id,
     mt.loyalty_account_id,
     mt.transaction_type,
-    mt.miles_amount,
-    mt.transaction_date,
+    mt.miles_delta,
+    mt.occurred_at,
     mt.notes,
     lat.loyalty_tier_id,
-    lt.tier_name              AS nivel_asignado,
-    lat.start_date            AS inicio_nivel,
-    lat.end_date              AS fin_nivel
+    lt.tier_name               AS nivel_asignado,
+    lat.assigned_at            AS inicio_nivel,
+    lat.expires_at             AS fin_nivel
 FROM miles_transaction mt
 INNER JOIN loyalty_account_tier lat
     ON lat.loyalty_account_id = mt.loyalty_account_id
-    AND lat.end_date IS NULL
+    AND (lat.expires_at IS NULL OR lat.expires_at > now())
 INNER JOIN loyalty_tier lt
     ON lt.loyalty_tier_id = lat.loyalty_tier_id
 WHERE mt.loyalty_account_id = (
@@ -52,5 +52,5 @@ WHERE mt.loyalty_account_id = (
     ORDER BY created_at DESC
     LIMIT 1
 )
-ORDER BY mt.transaction_date DESC
+ORDER BY mt.occurred_at DESC
 LIMIT 5;
