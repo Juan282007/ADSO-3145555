@@ -1,0 +1,27 @@
+5. Evolución a Microservicios
+
+
+txt
+Monolithic Modular
+│
+├── Security
+├── Schedule
+├── Instructor
+├── Environment
+├── Observation
+└── Reports
+
+
+---
+
+## Evolución a Microservicios
+
+txt
+Microservices
+│
+├── Auth Service
+├── Schedule Service
+├── Instructor Service
+├── Environment Service
+├── Observation Service
+└── Report Service
