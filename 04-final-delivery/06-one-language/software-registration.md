@@ -74,11 +74,11 @@ Authors are the instructors and the apprentices listed in `team-roster.md`. Each
 
 | Declaration / Declaración | Option / Opción |
 |---|---|
-| Origin / Origen | ☐ Original ☐ Derived work / Obra derivada |
-| If derived, base work / Si es derivada, obra de base | |
-| Type of work / Clase de obra | ☐ Individual ☐ In collaboration / En colaboración ☐ Collective / Colectiva ☐ Anonymous / Anónima ☐ Pseudonymous / Seudónima ☐ Posthumous / Póstuma |
-| Publication / Publicación | ☐ Unpublished / Inédita ☐ Published / Publicada |
-| If published, date and place / Si está publicada, fecha y lugar | |
+| Origin / Origen | ☒ Original ☐ Derived work / Obra derivada |
+| If derived, base work / Si es derivada, obra de base | Not applicable / No aplica |
+| Type of work / Clase de obra | ☐ Individual ☒ In collaboration / En colaboración ☐ Collective / Colectiva ☐ Anonymous / Anónima ☐ Pseudonymous / Seudónima ☐ Posthumous / Póstuma |
+| Publication / Publicación | ☐ Unpublished / Inédita ☒ Published / Publicada |
+| If published, date and place / Si está publicada, fecha y lugar | 4 November 2026 (public production/release `final-delivery`; confirm this was the first public disclosure), online from Colombia: https://onelanguage.tech. / 4 de noviembre de 2026 (publicación en producción/release `final-delivery`; confirmar que fue la primera divulgación pública), en línea desde Colombia: https://onelanguage.tech. |
 
 Software is treated as unpublished unless the rights holder states otherwise (art. 4). A public repository may count as publication: the team records it here, and the Centro decides the final declaration.
 
