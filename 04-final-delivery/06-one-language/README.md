@@ -14,7 +14,7 @@ Final delivery of the training project / Entrega final del proyecto formativo.
 | Process / Proceso | Completion of the technologist taught stage / Finalización de la etapa lectiva del tecnólogo |
 | Research seedbed / Semillero de investigación | Developers & Geeks |
 | Delivery version / Versión entregada | `final-delivery-2026` |
-| Delivery date / Fecha de entrega | |
+| Delivery date / Fecha de entrega | 4 November 2026 / 4 de noviembre de 2026 |
 | Delivered by / Entregado por | Juan Pablo Gómez Perdomo y Johan Alexander Acero Salazar |
 
 ## Summary / Resumen
