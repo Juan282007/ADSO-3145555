@@ -34,8 +34,8 @@ Final delivery of the training project / Entrega final del proyecto formativo.
 
 | Full name / Nombre completo | Doc. type / Tipo | Doc. number / Número | Ficha | GitHub user / Usuario | Role / Rol | Verified and authorized / Verificado y autorizado |
 |---|---|---|---|---|---|---|
-| JUAN PABLO GOMEZ PERDOMO | Dato reservado | No publicar; entregar por canal privado | 3145555 | Juan282007 | Frontend web/móvil e IA (propuesta según historial; validar) | ☐ |
-| JOHAN ALEXANDER ACERO SALAZAR | Dato reservado | No publicar; entregar por canal privado | 3145555 | JohanAceroSalazar | Backend y base de datos (propuesta según historial; validar) | ☐ |
+| JUAN PABLO GOMEZ PERDOMO | Dato reservado | No publicar; entregar por canal privado | 3145555 | Juan282007 | Software author and developer / Autor y desarrollador del software One Language | ☒ |
+| JOHAN ALEXANDER ACERO SALAZAR | Dato reservado | No publicar; entregar por canal privado | 3145555 | JohanAceroSalazar | Software author and developer / Autor y desarrollador del software One Language | ☒ |
 
 Data use authorization: document numbers are omitted from this public copy. Each member provides them privately to the instructor. A checked box is required before publishing personal data (Ley 1581 de 2012).
 
