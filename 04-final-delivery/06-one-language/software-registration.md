@@ -24,38 +24,28 @@ Llene todos los campos vacíos. Sigue el Decreto 1360 de 1989.
 
 ## 2. Authors / Autores (art. 5, num. 2)
 
-Authors are the instructors and the apprentices listed in `team-roster.md`. Each apprentice checks their data and writes their contribution. / Los autores son los instructores y aprendices de `team-roster.md`. Cada aprendiz revisa sus datos y escribe su aporte.
+The software authors and developers are Juan Pablo Gómez Perdomo and Johan Alexander Acero Salazar. Instructors provided guidance and support and are not declared as authors. / Los autores y desarrolladores del software son Juan Pablo Gómez Perdomo y Johan Alexander Acero Salazar. Los instructores brindaron orientación y apoyo y no se declaran como autores.
 
 | Full name / Nombre completo | Doc. type / Tipo | Doc. number / Número | Ficha | Contribution / Aporte |
 |---|---|---|---|---|
-| JESUS ARIEL GONZALEZ BONILLA | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| CARLOS FABIAN MARTINEZ MORA | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| CARLOS JULIO CADENA SARASTY | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| JAVIER HUMBERTO PINTO DIAZ | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| KAROL DANIELA CORREA TRUJILLO | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| JOSE DE JESUS MOTTA VARGAS | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| FERNELLY CARVAJAL SILVA | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| EDDIER YAIR LIBERATO CUENCA | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| JHON WILLIAN CORREDOR ARAUJO | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| ANDRES MORENO COLLAZOS | | Kept privately / En custodia | | Instructor: see `team-roster.md` / ver `team-roster.md` |
-| JUAN PABLO GOMEZ PERDOMO | CC | Kept privately / En custodia privada | 3145555 | Frontend web/móvil e IA (propuesta según historial local; confirmar aporte real) |
-| JOHAN ALEXANDER ACERO SALAZAR | CC | Kept privately / En custodia privada | 3145555 | Backend y base de datos (propuesta según historial local; confirmar aporte real) |
+| JUAN PABLO GOMEZ PERDOMO | CC | Kept privately / En custodia privada | 3145555 | Software author and developer / Autor y desarrollador del software One Language |
+| JOHAN ALEXANDER ACERO SALAZAR | CC | Kept privately / En custodia privada | 3145555 | Software author and developer / Autor y desarrollador del software One Language |
 
 ## 3. Producer / Productor (art. 5, num. 3)
 
 | Field / Campo | Value / Valor |
 |---|---|
-| Producer name / Nombre del productor | Supporting and cross-cutting instructors / Instructores de apoyo y transversales: JESUS ARIEL GONZALEZ BONILLA, CARLOS FABIAN MARTINEZ MORA, CARLOS JULIO CADENA SARASTY, JAVIER HUMBERTO PINTO DIAZ, KAROL DANIELA CORREA TRUJILLO, JOSE DE JESUS MOTTA VARGAS, FERNELLY CARVAJAL SILVA, EDDIER YAIR LIBERATO CUENCA, JHON WILLIAN CORREDOR ARAUJO, ANDRES MORENO COLLAZOS. Project apprentices / Aprendices del equipo: JUAN PABLO GOMEZ PERDOMO, JOHAN ALEXANDER ACERO SALAZAR. |
-| ID document or NIT / Identificación o NIT | Apprentices: section 2. Instructors: kept privately by the lead instructor. / Aprendices: sección 2. Instructores: en custodia del instructor líder. |
+| Producer name / Nombre del productor | To confirm with SENA and the authors under the applicable registration criteria. Instructors are support, not authors. / Por confirmar con el SENA y los autores según los criterios de registro aplicables. Los instructores son apoyo, no autores. |
+| ID document or NIT / Identificación o NIT | Complete after confirming the producer. / Completar al confirmar el productor. |
 
 ## 4. Rights holder / Titular de los derechos patrimoniales
 
 | Field / Campo | Value / Valor |
 |---|---|
-| Rights holder / Titular | Supporting and cross-cutting instructors / Instructores de apoyo y transversales: JESUS ARIEL GONZALEZ BONILLA, CARLOS FABIAN MARTINEZ MORA, CARLOS JULIO CADENA SARASTY, JAVIER HUMBERTO PINTO DIAZ, KAROL DANIELA CORREA TRUJILLO, JOSE DE JESUS MOTTA VARGAS, FERNELLY CARVAJAL SILVA, EDDIER YAIR LIBERATO CUENCA, JHON WILLIAN CORREDOR ARAUJO, ANDRES MORENO COLLAZOS. Project apprentices / Aprendices del equipo: JUAN PABLO GOMEZ PERDOMO, JOHAN ALEXANDER ACERO SALAZAR. |
-| ID document or NIT / Identificación o NIT | Apprentices: section 2. Instructors: kept privately by the lead instructor. / Aprendices: sección 2. Instructores: en custodia del instructor líder. |
-| How rights were acquired / Cómo adquirió los derechos, si no es el autor | Not applicable: the rights holders are the authors / No aplica: los titulares son los autores |
-| Document that proves it / Documento que lo prueba | Not applicable / No aplica |
+| Rights holder / Titular | Juan Pablo Gómez Perdomo and Johan Alexander Acero Salazar, subject to confirming that no rights were assigned to SENA or another entity. / Juan Pablo Gómez Perdomo y Johan Alexander Acero Salazar, sujeto a confirmar que no hayan cedido derechos al SENA u otra entidad. |
+| ID document or NIT / Identificación o NIT | See section 2; provide privately in the official filing. / Ver sección 2; aportar por canal privado en el trámite oficial. |
+| How rights were acquired / Cómo adquirió los derechos, si no es el autor | Authors' rights are claimed as original; verify any applicable training, employment, or assignment agreement. / Se manifiestan derechos de autoría original; verificar cualquier acuerdo formativo, laboral o de cesión aplicable. |
+| Document that proves it / Documento que lo prueba | To confirm; attach any applicable rights-transfer or institutional authorization document. / Por confirmar; adjuntar el documento de cesión o autorización institucional que aplique. |
 
 ## 5. The work / La obra (art. 5, num. 4)
 
